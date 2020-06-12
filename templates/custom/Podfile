@@ -1,0 +1,12 @@
+platform :ios, '10.0'
+use_modular_headers!
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'Example-iOS' do
+  pod 'POD_NAME', :path => './'
+
+  target 'Tests' do
+    inherit! :search_paths
+  end
+end

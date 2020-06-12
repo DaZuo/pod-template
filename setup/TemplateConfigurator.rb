@@ -5,6 +5,7 @@ module Pod
   class TemplateConfigurator
 
     attr_reader :pod_name, :pods_for_podfile, :prefixes, :test_example_file, :username, :email
+    attr_reader :template_name, :organization_name
 
     def initialize(pod_name)
       @pod_name = pod_name
@@ -68,6 +69,13 @@ module Pod
     end
 
     def run
+      @template_name = self.ask_with_answers("What template do you want to use?", ["custom", "official"])
+      if @template_name.to_sym != :official
+        @organization_name = self.ask("What organization name do you want to use?")
+        ConfigureCustom.perform(configurator: self)
+        return
+      end
+
       @message_bank.welcome_message
 
       platform = self.ask_with_answers("What platform do you want to use?", ["iOS", "macOS"]).to_sym
